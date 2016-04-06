@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,RtlHardcoded" >
+
+    <com.mj.lazy.DopeTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ADD USSD CODE"
+        android:background="#16000000"
+        android:padding="12dp"/>
+
+    <EditText
+        android:id="@+id/us_name"
+        android:hint="Name: eg. m-pesa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="10"
+        android:inputType="text" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/us_code"
+        android:hint="Code: eg. *150*00#"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:ems="10"
+        android:inputType="phone" />
+
+    <com.mj.lazy.DopeTextView
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#779ee4bc"
+        android:text="SAVE"
+        android:gravity="center"
+        android:padding="12dp"/>
+
+
+
+</LinearLayout>
