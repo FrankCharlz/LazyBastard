@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity  {
     private Button btnAdd;
     private RecyclerView recyclerView;
     private ListAdapter adapter;
+    private ArrayList<UssdCode> ussdCodes;
 
 
     @Override
@@ -36,10 +37,12 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
 
-        UssdCode.initList(this, FILENAME);
-        for (int i = 0; i<3; i++) UssdCode.List.add(new UssdCode("m-pesa", "*15"+i+"*00#", i));
+        ussdCodes = new ArrayList<UssdCode>(10);
 
-        adapter = new ListAdapter(this, UssdCode.List);
+        UssdCode.initList(this, FILENAME);
+        for (int i = 0; i<3; i++) ussdCodes.add(new UssdCode("m-pesa", "*15"+i+"*00#", i));
+
+        adapter = new ListAdapter(this, ussdCodes);
 
         initViews();
     }
@@ -55,7 +58,15 @@ public class MainActivity extends AppCompatActivity  {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AddUssdDialog(MainActivity.this, adapter).show();
+                new AddUssdDialog(MainActivity.this,
+                        new Dismissable() {
+                            @Override
+                            public void addCode(UssdCode code) {
+                                ussdCodes.add(code);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                        }).show();
             }
         });
 
@@ -68,7 +79,7 @@ public class MainActivity extends AppCompatActivity  {
     protected void onStop() {
         super.onStop();
         try {
-            saveToFile(UssdCode.List);
+            saveToFile(ussdCodes);
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("mj", e.getMessage() + "error when writing..");

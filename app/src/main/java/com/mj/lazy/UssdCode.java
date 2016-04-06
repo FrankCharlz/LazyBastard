@@ -26,7 +26,6 @@ public class UssdCode implements Serializable {
     private String name;
     private String code;
     private int frequency = 0;
-    public static List<UssdCode> List;
 
     public UssdCode(String name, String code, int frequency) {
         this.code = code;
@@ -57,37 +56,17 @@ public class UssdCode implements Serializable {
     }
 
 
-    public static List<UssdCode> getFromDB(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("db", 0);
-        Set<String> set = prefs.getStringSet("set", new HashSet<String>());
-
-        ArrayList<UssdCode> ussdCodes = new ArrayList<>(6);
-        for (String str : set){
-            ussdCodes.add(UssdCode.fromString(str));
-        }
-        return ussdCodes;
-    }
-
-    public static void addToDB(Context context, UssdCode ussdCode) {
-
-        SharedPreferences prefs = context.getSharedPreferences("db", 0);
-        Set<String> set = prefs.getStringSet("set", new HashSet<String>());
-
-        Set<String> in_set = new HashSet<String>(set);
-        in_set.add(String.valueOf(ussdCode.toString()));
-        prefs.edit().putStringSet("set", in_set).apply();
-    }
-
-    public static void initList(Context context, String fname) {
-        List = new ArrayList<>(10);
+    public static ArrayList<UssdCode> initList(Context context, String fname) {
+        ArrayList<UssdCode> rList = new ArrayList<>(10);
         try {
             FileInputStream fis = context.openFileInput(fname);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            List<UssdCode> temp = (List<UssdCode>) ois.readObject();
-            List.addAll(temp);
+            ArrayList<UssdCode> temp = (ArrayList<UssdCode>) ois.readObject();
+            rList.addAll(temp);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("mj", "An error in reading : "+e.getMessage());
         }
+        return rList;
     }
 }
