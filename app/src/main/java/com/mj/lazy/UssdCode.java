@@ -1,28 +1,11 @@
 package com.mj.lazy;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
-
 /**
  * Created by Frank on 3/29/2016.
  *
  */
-public class UssdCode implements Serializable {
+public class UssdCode implements Comparable<UssdCode> {
+    private static final String SEPARATOR = "___";
     private String name;
     private String code;
     private int frequency = 0;
@@ -51,22 +34,23 @@ public class UssdCode implements Serializable {
 
     @Override
     public String toString() {
-        String SEPARATOR = "__";
         return name + SEPARATOR + code + SEPARATOR + frequency;
     }
 
 
-    public static ArrayList<UssdCode> initList(Context context, String fname) {
-        ArrayList<UssdCode> rList = new ArrayList<>(10);
-        try {
-            FileInputStream fis = context.openFileInput(fname);
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            ArrayList<UssdCode> temp = (ArrayList<UssdCode>) ois.readObject();
-            rList.addAll(temp);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("mj", "An error in reading : "+e.getMessage());
+    public static UssdCode fromString(String str) {
+        String[] parts = str.split(SEPARATOR);
+
+        if (parts.length == 3) {
+            int f = Integer.parseInt(parts[2]);
+            return  new UssdCode(parts[0], parts[1], f);
         }
-        return rList;
+        return  null;
+    }
+
+
+    @Override
+    public int compareTo(UssdCode other) {
+        return other.getFrequency() - getFrequency();
     }
 }

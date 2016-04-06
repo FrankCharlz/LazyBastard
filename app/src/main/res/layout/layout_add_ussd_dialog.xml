@@ -10,15 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ADD USSD CODE"
+        android:gravity="center"
         android:background="#16000000"
-        android:padding="12dp"/>
+        android:padding="14dp"
+        android:textSize="17sp"
+
+        />
 
     <EditText
         android:id="@+id/us_name"
         android:hint="Name: eg. m-pesa"
+        android:textColorHint="@color/green.alpha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:ems="10"
         android:inputType="text" >
 
@@ -28,9 +33,10 @@
     <EditText
         android:id="@+id/us_code"
         android:hint="Code: eg. *150*00#"
+        android:textColorHint="@color/green.alpha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:ems="10"
         android:inputType="phone" />
 
@@ -38,10 +44,11 @@
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#779ee4bc"
+        android:background="#a12fc971"
         android:text="SAVE"
         android:gravity="center"
-        android:padding="12dp"/>
+        android:textSize="17sp"
+        android:padding="16dp"/>
 
 
 

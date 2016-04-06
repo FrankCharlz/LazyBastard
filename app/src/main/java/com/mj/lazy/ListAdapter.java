@@ -4,9 +4,14 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +43,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.name.setText(ussdCodes.get(position).getName());
         holder.code.setText(ussdCodes.get(position).getCode());
+
+        if (position % 2 == 0 ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                holder.itemView.setBackground(new ColorDrawable(ContextCompat.getColor(context, R.color.table)));
+            }
+        }
+
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -68,11 +82,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         @Override
         public void onClick(View view) {
             //uses tag and position to determine right method to call
-            int pos = getAdapterPosition();
+            int pos = getLayoutPosition();
             if (view.getTag() != null && view.getTag().equals(TAG_DELETE)) {
                 //delete clicked...
                 ussdCodes.remove(pos);
-                notifyItemChanged(pos);
+                notifyItemRemoved(pos);
             } else {
                 //dial the bitch..
                 dialCode(ussdCodes.get(pos));
@@ -83,6 +97,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private void dialCode(UssdCode ussdCode) {
         ussdCode.incrementFrequency();
         String number = ussdCode.getCode();
+        number = number.replaceAll("#", "%23");
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + number));
 
